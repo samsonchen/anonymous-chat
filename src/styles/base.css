@@ -1,0 +1,143 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  overflow: hidden;
+}
+
+/* 整個畫面高度。手機鍵盤跳出時，useViewportHeight 會改寫 --app-height */
+#root {
+  display: flex;
+  flex-direction: column;
+  height: var(--app-height, 100dvh);
+  overflow: hidden;
+}
+
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.icon {
+  flex: none;
+}
+
+/* 鍵盤操作時看得到焦點在哪裡 */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.topbar :focus-visible,
+.online__backdrop:focus-visible {
+  outline-color: #ffffff;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--online);
+  flex: none;
+}
+
+/* 轉圈圖示 */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon--spin,
+.msg__status--sending .icon,
+.conn--connecting .icon,
+.join__submit .icon {
+  animation: spin 0.9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* 展示模式提示條（進入畫面與聊天室頂端都有） */
+.demo-banner {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--strip-bg);
+  color: var(--strip-ink);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* 通用的邊框按鈕 */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: 0 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.button--outline {
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}

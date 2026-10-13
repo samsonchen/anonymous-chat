@@ -1,0 +1,641 @@
+/* 聊天室畫面。手機優先，768px 以上是電腦排法（名單固定在右側）。 */
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.chat__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.chat__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ───────── 頂端列 ───────── */
+
+.topbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 64px;
+  padding: 0 8px 0 16px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.topbar__title {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.topbar__pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--tap);
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.topbar__pill .dot,
+.topbar__count .dot {
+  background: var(--online-on-accent);
+}
+
+.topbar__pill[aria-expanded='true'] {
+  border-color: #fff;
+  background: #fff;
+  color: var(--accent-dark);
+}
+
+.topbar__pill[aria-expanded='true'] .dot {
+  background: var(--online);
+}
+
+.topbar__count {
+  display: none;
+}
+
+.topbar__leave {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: var(--tap);
+  min-height: var(--tap);
+  padding: 0 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.topbar__leave .icon {
+  display: none;
+}
+
+/* ───────── 連線狀態列 ───────── */
+
+.conn {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  padding: 6px 16px;
+  font-size: 14px;
+}
+
+.conn__text {
+  flex: 1;
+}
+
+.conn--connecting {
+  background: var(--panel-bg);
+  color: var(--ink);
+}
+
+.conn--reconnecting {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+}
+
+.conn--offline {
+  background: var(--error-soft);
+  color: var(--error-ink);
+  padding-right: 8px;
+}
+
+.conn__button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: 0 14px;
+  border: 1.5px solid currentColor;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ───────── 訊息列表 ───────── */
+
+.list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.list__scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* 訊息少的時候貼在底部，多的時候正常往上捲 */
+.list__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  min-height: 100%;
+}
+
+.list__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 110px;
+  border: 1.5px dashed var(--line-dashed);
+  border-radius: 12px;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.list__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 15px;
+  text-align: center;
+}
+
+.list__new {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: 0 18px;
+  border-radius: 22px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(31, 11, 11, 0.25);
+}
+
+.notice {
+  align-self: center;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ───────── 單則訊息 ───────── */
+
+.msg {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 86%;
+}
+
+.msg--other {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.msg--own {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.msg__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.msg--own .msg__meta {
+  align-items: center;
+}
+
+.msg__name {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.msg__time {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.msg__bubble {
+  max-width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px 14px 14px 14px;
+  background: var(--surface);
+  font-size: 15px;
+  line-height: 1.55;
+  white-space: pre-wrap; /* 保留換行 */
+  overflow-wrap: anywhere; /* 很長的字串會自動折行，不會撐破版面 */
+}
+
+.msg--own .msg__bubble {
+  border-color: var(--accent);
+  border-radius: 14px 4px 14px 14px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.msg--sending .msg__bubble {
+  opacity: 0.75;
+}
+
+.msg--failed .msg__bubble {
+  border-color: var(--error);
+  background: var(--error-soft);
+  color: var(--ink);
+}
+
+.msg__status {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+}
+
+.msg__status--sending {
+  color: var(--muted);
+}
+
+.msg__status--sent {
+  color: var(--accent);
+}
+
+.msg__status--failed {
+  color: var(--error);
+  font-weight: 700;
+}
+
+.msg__retry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: 0 14px;
+  border: 1.5px solid var(--error);
+  border-radius: 10px;
+  color: var(--error);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ───────── 輸入區 ───────── */
+
+.composer {
+  flex: none;
+  padding: 10px 12px calc(16px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.composer__toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--error-soft);
+  color: var(--error-ink);
+  font-size: 14px;
+}
+
+.composer__row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.composer__input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--tap);
+  max-height: 152px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--field-border);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 16px; /* 16px 以上，iPhone 才不會在輸入時自動放大畫面 */
+  line-height: 1.4;
+  overflow-y: auto;
+  resize: none;
+}
+
+.composer__send {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 68px;
+  min-height: var(--tap);
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.composer__send:disabled {
+  background: var(--disabled-bg);
+  color: var(--muted);
+}
+
+.composer__send .icon {
+  display: none;
+}
+
+.composer__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.composer__hint {
+  display: none;
+}
+
+.composer__count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+}
+
+.composer__count--full {
+  color: var(--error-ink);
+  font-weight: 500;
+}
+
+/* 沒有字數要顯示時，整列收起來，不要多出一條空白 */
+.composer__foot:not(:has(.composer__count)) {
+  display: none;
+}
+
+/* ───────── 上線名單（手機：從右邊滑出的抽屜） ───────── */
+
+.online__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  width: 100%;
+  height: var(--app-height, 100dvh);
+  background: var(--backdrop);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s,
+    visibility 0s 0.2s;
+}
+
+.online__backdrop[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s;
+}
+
+.online {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 21;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  max-width: 85vw;
+  height: var(--app-height, 100dvh);
+  background: var(--surface);
+  box-shadow: -8px 0 24px rgba(31, 11, 11, 0.18);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition:
+    transform 0.2s ease,
+    visibility 0s 0.2s;
+}
+
+.online[data-open='true'] {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.2s ease;
+}
+
+.online__head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 64px;
+  padding: 0 8px 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.online__title {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.online__title .mono {
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+.online__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: 22px;
+}
+
+.online__list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 2px;
+  min-height: 0;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.online__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.online__item--self {
+  background: var(--accent-soft);
+  font-weight: 700;
+}
+
+.online__name {
+  overflow-wrap: anywhere;
+}
+
+.online__you {
+  color: var(--accent-dark);
+  font-weight: 500;
+}
+
+/* ───────── 電腦（768px 以上） ───────── */
+
+@media (min-width: 768px) {
+  .topbar {
+    gap: 16px;
+    padding: 0 24px;
+  }
+
+  .topbar__title {
+    font-size: 18px;
+  }
+
+  .topbar__pill {
+    display: none;
+  }
+
+  .topbar__count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .topbar__leave {
+    padding: 0 16px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+  }
+
+  .topbar__leave .icon {
+    display: inline;
+  }
+
+  .list__scroll {
+    padding: 24px;
+  }
+
+  .list__inner {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    gap: 12px;
+  }
+
+  .msg {
+    max-width: 75%;
+  }
+
+  .msg__bubble {
+    padding: 9px 14px;
+  }
+
+  .composer {
+    padding: 14px 24px 16px;
+  }
+
+  .composer > * {
+    width: 100%;
+    max-width: 720px;
+    margin-inline: auto;
+  }
+
+  .composer__input {
+    min-height: 48px;
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+
+  .composer__send {
+    min-width: 84px;
+    min-height: 48px;
+    font-size: 15px;
+  }
+
+  .composer__send .icon {
+    display: inline;
+  }
+
+  /* 側邊名單：固定顯示，不用抽屜、遮罩和關閉按鈕 */
+  .online__backdrop,
+  .online__close {
+    display: none;
+  }
+
+  .online {
+    position: static;
+    z-index: auto;
+    flex: none;
+    width: 280px;
+    max-width: none;
+    height: auto;
+    border-left: 1px solid var(--line);
+    box-shadow: none;
+    transform: none;
+    visibility: visible;
+    transition: none;
+  }
+
+  .online__head {
+    height: 56px;
+    padding: 0 20px;
+  }
+
+  .online__title {
+    font-size: 15px;
+  }
+
+  .online__item {
+    min-height: 40px;
+    font-size: 15px;
+  }
+}
+
+/* 用滑鼠鍵盤時才顯示「Enter 送出」的提示（手機是用按鈕送出） */
+@media (min-width: 768px) and (pointer: fine) {
+  .composer__hint {
+    display: inline;
+  }
+
+  .composer__foot:not(:has(.composer__count)) {
+    display: flex;
+  }
+}

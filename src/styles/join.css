@@ -1,0 +1,159 @@
+/* 進入畫面 */
+.join {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.join__main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  padding: 0 24px;
+  overflow-y: auto;
+}
+
+/* 內容垂直置中；螢幕很矮（例如鍵盤跳出）時改成可以捲動，不會被切掉 */
+.join__card {
+  width: 100%;
+  max-width: 440px;
+  margin: auto;
+  padding: 32px 0 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.join__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.join__mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.join__title {
+  margin-top: 8px;
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.join__lead {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.join__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.join__label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.join__input {
+  width: 100%;
+  height: 52px;
+  padding: 0 14px;
+  border: 1.5px solid var(--field-border);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 17px; /* 16px 以上，iPhone 才不會在輸入時自動放大畫面 */
+}
+
+.join__input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.join__input[aria-invalid='true'] {
+  border: 2px solid var(--error);
+}
+
+.join__input:disabled {
+  background: #fbf6f4;
+  border-color: var(--line-soft);
+  color: var(--ink-2);
+}
+
+.join__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.join__message {
+  min-height: 22px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.join__error,
+.join__hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.join__error .icon,
+.join__hint .icon {
+  margin-top: 3px;
+}
+
+.join__error {
+  color: var(--error);
+}
+
+.join__hint {
+  color: var(--ink-2);
+}
+
+.join__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 52px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.join__submit:disabled {
+  background: var(--accent-disabled);
+}
+
+/* 電腦：同樣的內容放進白色卡片 */
+@media (min-width: 768px) {
+  .join__card {
+    padding: 40px;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .join__main {
+    padding-bottom: 0;
+  }
+}

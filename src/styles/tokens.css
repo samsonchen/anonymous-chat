@@ -1,0 +1,48 @@
+/* 顏色、字體、尺寸。數值來自 docs/design.md。 */
+:root {
+  /* 底色與文字 */
+  --bg: #f7efec;
+  --surface: #ffffff;
+  --ink: #1f0b0b;
+  --ink-2: #5e3a39;
+  --muted: #7a4f4c;
+
+  /* 線條與邊框 */
+  --line: #e6cfca;
+  --line-soft: #d9b8b3;
+  --line-dashed: #d2a9a3;
+  --field-border: #b07872;
+
+  /* 主色（紅） */
+  --accent: #c8102e;
+  --accent-dark: #8a0b1f;
+  --accent-soft: #fbd9d6;
+  --accent-disabled: #dc7a82;
+  --disabled-bg: #ebd5d1;
+  --panel-bg: #f0deda;
+
+  /* 展示模式提示條 */
+  --strip-bg: #1f0b0b;
+  --strip-ink: #ffd9d4;
+
+  /* 錯誤用橘色，避免和紅色主色混在一起 */
+  --error: #b54708;
+  --error-soft: #ffedd5;
+  --error-ink: #7a2e0e;
+
+  /* 連線中斷 */
+  --warn-bg: #fff1cc;
+  --warn-ink: #5c4300;
+
+  /* 在線小圓點 */
+  --online: #1f9d55;
+  --online-on-accent: #8cf2b0;
+
+  --backdrop: rgba(31, 11, 11, 0.5);
+
+  --font-sans: 'Noto Sans TC', system-ui, -apple-system, 'Segoe UI', 'PingFang TC',
+    'Microsoft JhengHei', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --tap: 44px; /* 可以點的東西至少這麼大 */
+}
