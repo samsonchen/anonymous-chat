@@ -31,7 +31,7 @@ jobs:
 
       - run: npm run build
         env:
-          # 階段一用模擬版。階段二到 repo 的 Settings → Secrets and variables → Actions → Variables
+          # 沒設定時用模擬版。要接 Supabase，到 repo 的 Settings → Secrets and variables → Actions → Variables
           # 設定這三個值（只放 Project URL 和 publishable key，絕對不要放 sb_secret_ 或 service_role）。
           VITE_CHAT_BACKEND: ${{ vars.VITE_CHAT_BACKEND || 'mock' }}
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}

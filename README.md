@@ -2,7 +2,10 @@
 
 不用登入的匿名聊天室，所有人在同一間。網頁放 GitHub Pages，即時傳訊用 Supabase。
 
-目前在**階段一**：只有前端，聊天內容由「模擬版」處理，訊息只存在自己的瀏覽器裡。階段二才接上 Supabase。
+目前在**階段二**：聊天內容有兩種處理方式，由設定 `VITE_CHAT_BACKEND` 決定：
+
+- `mock`（沒設定時的預設）：模擬版，訊息只存在自己的瀏覽器裡，別人看不到。
+- `supabase`：真正的聊天室，所有人在同一間。
 
 完整說明請看：
 
@@ -28,9 +31,26 @@ npm run build     # 檢查型別並打包成 dist/，要沒有錯誤才算通過
 npm run preview   # 預覽打包後的版本，和 GitHub Pages 上看到的一樣
 ```
 
-## 測試方法（階段一）
+## 接上 Supabase
 
-階段一沒有伺服器，所以「開兩個瀏覽器分頁」就等於兩個人。
+1. 建立 Supabase 專案，到 **SQL Editor** 貼上並執行 `supabase/setup.sql`（建資料表、權限規則、防洗版、每天清除 7 天前的訊息）。這份檔案可以重複執行。
+2. 在專案根目錄新增 `.env.local`（已被 `.gitignore` 擋掉，不會進 git），內容照 `.env.example`：
+
+   ```
+   VITE_CHAT_BACKEND=supabase
+   VITE_SUPABASE_URL=https://你的專案代號.supabase.co
+   VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+   ```
+
+3. `npm run dev`。開兩個分頁、用不同代號進入，就是兩個人。
+
+只會用到 Project URL 和 publishable key。**不要使用 `sb_secret_...` 或 `service_role`。**
+
+部署時，把同樣三個值設在 GitHub repo 的 **Settings → Secrets and variables → Actions → Variables**。
+
+## 測試方法（模擬版）
+
+模擬版沒有伺服器，所以「開兩個瀏覽器分頁」就等於兩個人。下面的網址參數只有模擬版有。
 
 | 想測什麼 | 怎麼做 |
 |---|---|
@@ -56,16 +76,16 @@ src/
 ├─ chat/        聊天服務。畫面只認 ChatService 這份合約
 │  ├─ types.ts              訊息格式、事件、錯誤代碼
 │  ├─ ChatService.ts        聊天服務介面
-│  ├─ MockChatService.ts    階段一：模擬版
-│  ├─ createChatService.ts  依 VITE_CHAT_BACKEND 決定用哪一版（唯一知道有兩版的地方）
-│  └─ validation.ts         代號與訊息的檢查規則
+│  ├─ MockChatService.ts      模擬版
+│  ├─ SupabaseChatService.ts  Supabase 版
+│  ├─ createChatService.ts    依 VITE_CHAT_BACKEND 決定用哪一版（唯一知道有兩版的地方）
+│  ├─ order.ts                在線者與訊息的排序規則（兩版共用）
+│  └─ validation.ts           代號與訊息的檢查規則
 ├─ hooks/       把聊天服務的事件轉成畫面的狀態
 ├─ components/  畫面零件
 ├─ screens/     進入畫面、聊天室畫面
 └─ styles/      顏色（tokens.css）與各畫面的樣式
 ```
-
-階段二要做的事：新增 `SupabaseChatService.ts`，在 `createChatService.ts` 加一個分支，其他不用動。
 
 ## 部署到 GitHub Pages
 
@@ -77,6 +97,5 @@ repo 改名時，要同步改 `vite.config.ts` 裡的 `REPO_NAME`。
 
 ## 金鑰
 
-階段一沒有任何金鑰。階段二也只會用到 Supabase 的 Project URL 和 publishable key，
-不需要、也不要使用 secret key。`.env` 開頭的檔案已被 `.gitignore` 擋掉，
+只會用到 Supabase 的 Project URL 和 publishable key，不需要、也不要使用 secret key。`.env` 開頭的檔案已被 `.gitignore` 擋掉，
 只有範本 `.env.example` 會進 git。

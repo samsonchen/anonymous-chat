@@ -8,7 +8,7 @@
 
 ## 目前進度
 
-目前在**階段一**：只做前端，聊天服務用模擬版（mock），不接 Supabase。階段二才接 Supabase。
+目前在**階段二**：前端已完成，聊天服務有模擬版（mock）和 Supabase 版，由 `VITE_CHAT_BACKEND` 選擇。資料庫設定在 `supabase/setup.sql`。
 
 ## 規則
 

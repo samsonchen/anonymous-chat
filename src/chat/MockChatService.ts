@@ -18,6 +18,7 @@ import {
   type Message,
 } from './types'
 import { newId } from './ids'
+import { compareMembers, compareMessages } from './order'
 import { readJSON, writeJSON } from './storage'
 import {
   RECENT_LIMIT,
@@ -68,17 +69,6 @@ const BOT_LINES = [
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-/** 比先後：joinedAt 早的在前，一樣時比 clientId */
-function compareMembers(a: Member, b: Member): number {
-  if (a.joinedAt !== b.joinedAt) return a.joinedAt < b.joinedAt ? -1 : 1
-  return a.clientId < b.clientId ? -1 : a.clientId > b.clientId ? 1 : 0
-}
-
-function compareMessages(a: Message, b: Message): number {
-  if (a.createdAt !== b.createdAt) return a.createdAt < b.createdAt ? -1 : 1
-  return a.id < b.id ? -1 : a.id > b.id ? 1 : 0
 }
 
 export class MockChatService implements ChatService {

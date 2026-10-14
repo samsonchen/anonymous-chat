@@ -217,7 +217,7 @@ flowchart TB
 | `clientId` | 文字（UUID） | 每個瀏覽器分頁各自產生一個。用來判斷「兩個人搶同一個代號」時誰先誰後 |
 | `joinedAt` | 時間 | 進入時間 |
 
-階段二的 Presence 用 `nickname` 當 key（Supabase 用 key 區分不同的登記者）。聊天室只有一間，頻道名稱固定為 `lobby`。
+階段二的 Presence 用 `nicknameKey(nickname)`（全形半形、大小寫視為相同的代號）當 key（Supabase 用 key 區分不同的登記者），這樣「Mei」和「ＭＥＩ」會落在同一個 key 底下，搶代號的判斷不會漏。聊天室只有一間，頻道名稱固定為 `lobby`。
 
 ### 5.2 指令（畫面對聊天服務下的）
 
@@ -252,6 +252,14 @@ flowchart TB
 | `loadRecent` | 查 `messages` 表，依 `createdAt` 由新到舊取 100 筆，再反過來排 |
 
 Supabase 官方文件說明，Presence 的 `sync` 有時會在沒有人真正進出時也觸發（只是和伺服器對帳）。所以進出提示只能靠比對「前後兩份名單的差別」，不能每次 `join`、`leave` 都顯示。
+
+實作時的補充（`SupabaseChatService.ts`）：
+
+- 訂閱頻道時設定 `postgres_changes_options.wait: true`：等到「新訊息的推送」真的準備好，才算訂閱成功。之後才查歷史，才不會漏。
+- 斷線後 supabase-js 會自己重新訂閱，但 Presence 登記要自己再做一次（`track`），登記成功才把狀態改回 `connected`。
+- 重連後的第一份名單只當作新的比對基準，不補發斷線期間的進出提示。其他人那邊會看到「離開了」，恢復後再看到「進來了」。
+- 重送遇到主鍵重複（`23505`）視為成功，並查出那一則補發一次 `message` 事件，畫面才能標成已送達。
+- 資料庫的 `RATE_LIMITED` 錯誤會對應成同名的錯誤代碼。
 
 ### 5.5 `messages` 表（階段二）
 
@@ -608,6 +616,7 @@ anonymous-chat/
 │  │  ├─ types.ts              [1] Message、事件、錯誤代碼的型別（第 5 段的合約）
 │  │  ├─ ChatService.ts        [1] 聊天服務介面
 │  │  ├─ validation.ts         [1] 代號與訊息的檢查規則（兩版共用）
+│  │  ├─ order.ts              [2] 在線者與訊息的排序規則（兩版共用）
 │  │  ├─ MockChatService.ts    [1] 模擬版
 │  │  ├─ SupabaseChatService.ts [2] Supabase 版
 │  │  └─ createChatService.ts  [1] 依設定選擇使用哪一版
